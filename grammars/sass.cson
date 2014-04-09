@@ -185,6 +185,12 @@
     'include': '#comment-block'
   }
   {
+    'match': '(@)[^\\s]+',
+    'name': 'punctuation.definition.keyword.sass'
+    'captures':
+      '1': 'keyword.control.at-rule.import.sass'
+  }
+  {
     'begin': '^\\s*((@)import\\b)'
     'beginCaptures':
       '1':
