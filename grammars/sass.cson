@@ -504,7 +504,7 @@
 
   'keywords':
     {
-      'match': '\\b(from|in|through)\\b'
+      'match': '\\b(from|in|through|not|to)\\b'
       'name': 'keyword.control.sass'
     }
 
