@@ -6,25 +6,9 @@
 'foldingStopMarker': '^\\s*$'
 'name': 'Sass'
 'patterns': [
+
   {
-    'begin': '^(\\!|\\$)([a-zA-Z0-9_-]+)\\s*((?:\\|\\|)?=|:)'
-    'beginCaptures':
-      '1':
-        'name': 'punctuation.definition.entity.sass'
-      '2':
-        'name': 'variable.other.sass'
-      '3':
-        'name': 'punctuation.definition.entity.sass'
-    'end': '(;)?$'
-    'endCaptures':
-      '1':
-        'name': 'invalid.illegal.punctuation.sass'
-    'name': 'meta.variable-declaration.sass'
-    'patterns': [
-      {
-        'include': '#property-value'
-      }
-    ]
+    'include': '#interpolations'
   }
   {
     'begin': '^(=|@mixin\\s+)([a-zA-Z0-9_-]+)'
@@ -109,80 +93,42 @@
       }
     ]
   }
-  {
-    'begin': '(?=[.*&#a-zA-Z][:.*&#a-zA-Z]*)'
-    'end': '(;)?$'
-    'endCaptures':
-      '1':
-        'name': 'invalid.illegal.punctuation.sass'
-    'name': 'meta.selector.css'
-    'patterns': [
-      {
-        'include': '#comment-block'
-      }
-      {
-        'match': '(&)'
-        'name': 'keyword.other.parent-reference.sass'
-      }
-      {
-        'match': '\\b(a|abbr|acronym|address|area|article|aside|audio|b|base|big|blockquote|body|br|button|canvas|caption|cite|code|col|colgroup|command|datalist|dd|del|details|dfn|div|dl|dt|em|embed|fieldset|figure|footer|form|frame|frameset|(h[1-6])|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|map|mark|meta|meter|nav|noframes|noscript|object|ol|optgroup|option|output|p|param|pre|progress|q|rp|rt|ruby|samp|script|section|select|small|source|span|strike|strong|sub|sup|table|tbody|td|textarea|tfoot|th|thead|time|title|tr|tt|ul|var|video)\\b'
-        'name': 'entity.name.tag.css.sass'
-      }
-      {
-        'captures':
-          '1':
-            'name': 'punctuation.definition.entity.css'
-        'match': '(\\.)[a-zA-Z0-9_-]+'
-        'name': 'entity.other.attribute-name.class.sass'
-      }
-      {
-        'captures':
-          '1':
-            'name': 'punctuation.definition.entity.sass'
-        'match': '(#)[a-zA-Z][a-zA-Z0-9_-]*'
-        'name': 'entity.other.attribute-name.id.css.sass'
-      }
-      {
-        'match': '\\*'
-        'name': 'entity.name.tag.wildcard.sass'
-      }
-      {
-        'captures':
-          '1':
-            'name': 'punctuation.definition.entity.sass'
-        'match': '(:+)\\b(after|before|first-child|first-letter|first-line|last-child|selection)\\b'
-        'name': 'entity.other.attribute-name.pseudo-element.sass'
-      }
-      {
-        'captures':
-          '1':
-            'name': 'punctuation.definition.entity.sass'
-        'match': '(:)\\b(active|hover|link|visited|focus)\\b'
-        'name': 'entity.other.attribute-name.pseudo-class.css.sass'
-      }
-      {
-        'captures':
-          '1':
-            'name': 'punctuation.definition.entity.sass'
-          '2':
-            'name': 'entity.other.attribute-name.attribute.sass'
-          '3':
-            'name': 'punctuation.separator.operator.sass'
-          '4':
-            'name': 'string.unquoted.attribute-value.sass'
-          '5':
-            'name': 'string.quoted.double.attribute-value.sass'
-          '6':
-            'name': 'punctuation.definition.string.begin.sass'
-          '7':
-            'name': 'punctuation.definition.string.end.sass'
-        'match': '(?i)(\\[)\\s*(-?[_a-z\\\\[[:^ascii:]]][_a-z0-9\\-\\\\[[:^ascii:]]]*)(?:\\s*([~|^$*]?=)\\s*(?:(-?[_a-z\\\\[[:^ascii:]]][_a-z0-9\\-\\\\[[:^ascii:]]]*)|((?>([\'"])(?:[^\\\\]|\\\\.)*?(\\6)))))?\\s*(\\])'
-        'name': 'meta.attribute-selector.css.sass'
-      }
-    ]
-  }
+
   {
     'include': '#comment-block'
+  }
+  {
+    'include': '#tags'
+  }
+  {
+    'include': '#parent-selector'
+  }
+  {
+    'include': '#class-selector'
+  }
+  {
+    'include': '#id-selector'
+  }
+  {
+    'include': '#placeholder-selector'
+  }
+  {
+    'include': '#pseudo-element'
+  }
+  {
+    'include': '#pseudo-state'
+  }
+  {
+    'include': '#variable_setting'
+  }
+  {
+    'include': '#variables'
+  }
+  {
+    'include': '#keywords'
+  }
+  {
+    'include': '#operators'
   }
   {
     'begin': '^\\s*((@)import\\b)'
@@ -231,6 +177,12 @@
     ]
   }
   {
+    'match': '(@)[^\\s]+',
+    'name': 'punctuation.definition.keyword.sass'
+    'captures':
+      '1': 'keyword.control.at-rule.import.sass'
+  }
+  {
     'begin': '^\\s*((@)media)\\s+(((all|aural|braille|embossed|handheld|print|projection|screen|tty|tv)\\s*,?\\s*)+)\\s*{'
     'captures':
       '1':
@@ -259,8 +211,7 @@
     'name': 'meta.property-name.sass'
     'patterns': [
       {
-        'match': '(azimuth|background-attachment|background-color|background-image|background-position|background-repeat|background|border-bottom-color|border-bottom-style|border-bottom-width|border-bottom|border-collapse|border-color|border-left-color|border-left-style|border-left-width|border-left|border-radius|border-right-color|border-right-style|border-right-width|border-right|border-spacing|border-style|border-top-color|border-top-style|border-top-width|border-top|border-width|border|bottom|box-shadow|caption-side|clear|clip|color|content|counter-increment|counter-reset|cue-after|cue-before|cue|cursor|decoration|direction|display|elevation|empty-cells|family|float|font-family|font-size-adjust|font-size|font-stretch|font-style|font-variant|font-weight|font|height|image|indent|left|letter-spacing|line-height|list-style-image|list-style-position|list-style-type|list-style|margin-bottom|margin-left|margin-right|margin-top|marker-offset|margin|marks|max-height|max-width|min-height|min-width|-moz-border-radius|-moz-box-shadow|opacity|orphans|outline-color|outline-style|outline-width|outline|overflow(-[xy])?|padding-bottom|padding-left|padding-right|padding-top|padding|page-break-after|page-break-before|page-break-inside|page|pause-after|pause-before|pause|pitch-range|pitch|play-during|position|quotes|repeat|richness|right|shadow|size|speak-header|speak-numeral|speak-punctuation|speech-rate|speak|src|stress|style|table-layout|text|text-align|text-decoration|text-indent|text-shadow|text-transform|top|transform|unicode-bidi|vertical-align|visibility|voice-family|volume|weight|white-space|widows|width|word-spacing|z-index)\\b'
-        'name': 'support.type.property-name.css.sass'
+        'include': '#property-name'
       }
       {
         'include': '#property-value'
@@ -268,22 +219,13 @@
     ]
   }
   {
-    'begin': '^[\\s\\t]+(align|azimuth|background-attachment|background-color|background-image|background-position|background-repeat|background|border-bottom-color|border-bottom-style|border-bottom-width|border-bottom|border-collapse|border-color|border-left-color|border-left-style|border-left-width|border-left|border-radius|border-right-color|border-right-style|border-right-width|border-right|border-spacing|border-style|border-top-color|border-top-style|border-top-width|border-top|border-width|border|bottom|box-shadow|caption-side|clear|clip|color|content|counter-increment|counter-reset|cue-after|cue-before|cue|cursor|decoration|direction|display|elevation|empty-cells|family|float|font-family|font-size-adjust|font-size|font-stretch|font-style|font-variant|font-weight|font|height|image|indent|left|letter-spacing|line-height|list-style-image|list-style-position|list-style-type|list-style|margin-bottom|margin-left|margin-right|margin-top|marker-offset|margin|marks|max-height|max-width|min-height|min-width|-moz-border-radius|-moz-box-shadow|opacity|orphans|outline-color|outline-style|outline-width|outline|overflow(-[xy])?|padding-bottom|padding-left|padding-right|padding-top|padding|page-break-after|page-break-before|page-break-inside|page|pause-after|pause-before|pause|pitch-range|pitch|play-during|position|quotes|repeat|richness|right|shadow|size|speak-header|speak-numeral|speak-punctuation|speech-rate|speak|src|stress|style|table-layout|text|text-align|text-decoration|text-indent|text-shadow|text-transform|top|transform|unicode-bidi|vertical-align|visibility|voice-family|volume|-webkit-border-radius|-webkit-box-shadow|weight|white-space|widows|width|word-spacing|z-index)\\b([\\s\\t]*:|\\s?=)'
-    'beginCaptures':
-      '1':
-        'name': 'support.type.property-name.css.sass'
-      '2':
-        'name': 'punctuation.definition.entity.css.sass'
-    'end': '(;)?$'
-    'endCaptures':
-      '1':
-        'name': 'invalid.illegal.punctuation.sass'
-    'name': 'meta.property-name.sass'
-    'patterns': [
-      {
-        'include': '#property-value'
-      }
-    ]
+    'include': '#property-name'
+  }
+  {
+    'include': '#numeric'
+  }
+  {
+    'include': '#units'
   }
 ]
 'repository':
@@ -294,6 +236,11 @@
         'name': 'punctuation.definition.comment.sass'
     'end': '^(?!\\1\\s)'
     'name': 'comment.sass'
+  'property-name':
+    {
+      'match': '(-webkit-[A-Za-z]+|-moz-[A-Za-z]+|-o-[A-Za-z]+|-ms-[A-Za-z]+|-khtml-[A-Za-z]+|[0-9]{1,3}\\%|zoom|z-index|y|x|wrap|word-wrap|word-spacing|word-break|word|width|widows|white-space-collapse|white-space|white|weight|volume|voice-volume|voice-stress|voice-rate|voice-pitch-range|voice-pitch|voice-family|voice-duration|voice-balance|voice|visibility|vertical-align|variant|user-select|up|unicode-bidi|unicode|trim|transition-timing-function|transition-property|transition-duration|transition-delay|transition|transform|top-width|top-style|top-right-radius|top-left-radius|top-color|top|timing-function|text-wrap|text-transform|text-shadow|text-replace|text-outline|text-justify|text-indent|text-height|text-emphasis|text-decoration|text-align-last|text-align|text|target-position|target-new|target-name|target|table-layout|tab-size|style-type|style-position|style-image|style|string-set|stretch|stress|stacking-strategy|stacking-shift|stacking-ruby|stacking|src|speed|speech-rate|speech|speak-punctuation|speak-numeral|speak-header|speak|span|spacing|space-collapse|space|sizing|size-adjust|size|shadow|respond-to|rule-width|rule-style|rule-color|rule|ruby-span|ruby-position|ruby-overhang|ruby-align|ruby|rows|rotation-point|rotation|role|right-width|right-style|right-color|right|richness|rest-before|rest-after|rest|resource|resolution|resize|reset|replace|repeat|rendering-intent|rate|radius|quotes|punctuation-trim|punctuation|property|profile|presentation-level|presentation|position|pointer-events|point|play-state|play-during|play-count|pitch-range|pitch|phonemes|pause-before|pause-after|pause|page-policy|page-break-inside|page-break-before|page-break-after|page|padding-top|padding-right|padding-left|padding-bottom|padding|pack|overhang|overflow-y|overflow-x|overflow-style|overflow|outline-width|outline-style|outline-offset|outline-color|outline|orphans|origin|orientation|orient|ordinal-group|opacity|offset|numeral|new|nav-up|nav-right|nav-left|nav-index|nav-down|nav|name|move-to|model|min-width|min-height|min|max-width|max-height|max|marquee-style|marquee-speed|marquee-play-count|marquee-direction|marquee|marks|mark-before|mark-after|mark|margin-top|margin-right|margin-left|margin-bottom|margin|mask-image|list-style-type|list-style-position|list-style-image|list-style|list|lines|line-stacking-strategy|line-stacking-shift|line-stacking-ruby|line-stacking|line-height|line|level|letter-spacing|length|left-width|left-style|left-color|left|label|justify|iteration-count|inline-box-align|initial-value|initial-size|initial-before-align|initial-before-adjust|initial-after-align|initial-after-adjust|index|indent|increment|image-resolution|image-orientation|image|icon|hyphens|hyphenate-resource|hyphenate-lines|hyphenate-character|hyphenate-before|hyphenate-after|hyphenate|height|header|hanging-punctuation|grid-rows|grid-columns|grid|gap|font-weight|font-variant|font-style|font-stretch|font-size-adjust|font-size|font-family|font|float-offset|float|flex-group|flex|fit-position|fit|fill|filter|family|empty-cells|emphasis|elevation|duration|drop-initial-value|drop-initial-size|drop-initial-before-align|drop-initial-before-adjust|drop-initial-after-align|drop-initial-after-adjust|drop|down|dominant-baseline|display-role|display-model|display|direction|delay|decoration-break|decoration|cursor|cue-before|cue-after|cue|crop|counter-reset|counter-increment|counter|count|content|columns|column-width|column-span|column-rule-width|column-rule-style|column-rule-color|column-rule|column-gap|column-fill|column-count|column-break-before|column-break-after|column|color-profile|color|collapse|clip|clear|character|caption-side|break-inside|break-before|break-after|break|box-sizing|box-shadow|box-pack|box-orient|box-ordinal-group|box-lines|box-flex-group|box-flex|box-direction|box-decoration-break|box-align|box|bottom-width|bottom-style|bottom-right-radius|bottom-left-radius|bottom-color|bottom|border-width|border-top-width|border-top-style|border-top-right-radius|border-top-left-radius|border-top-color|border-top|border-style|border-spacing|border-right-width|border-right-style|border-right-color|border-right|border-radius|border-length|border-left-width|border-left-style|border-left-color|border-left|border-image|border-color|border-collapse|border-bottom-width|border-bottom-style|border-bottom-right-radius|border-bottom-left-radius|border-bottom-color|border-bottom|border|bookmark-target|bookmark-level|bookmark-label|bookmark|binding|bidi|before|baseline-shift|baseline|balance|background-size|background-repeat|background-position|background-origin|background-image|background-color|background-clip|background-break|background-attachment|background|azimuth|attachment|appearance|animation-timing-function|animation-play-state|animation-name|animation-iteration-count|animation-duration|animation-direction|animation-delay|animation|alignment-baseline|alignment-adjust|alignment|align-last|align|after|adjust)\\b'
+      'name': 'support.type.property-name.css.sass'
+    }
   'property-value':
     'begin': '(:)?\\s?+'
     'beginCaptures':
@@ -310,6 +257,9 @@
         'name': 'punctuation.definition.entity.css'
       }
       {
+        'include': '#interpolations'
+      }
+      {
         'captures':
           '1':
             'name': 'punctuation.definition.entity.css'
@@ -319,8 +269,7 @@
         'name': 'meta.variable-usage.sass'
       }
       {
-        'match': '\\b(absolute|all-scroll|always|auto|baseline|below|bidi-override|block|bold|bolder|both|bottom|break-all|break-word|capitalize|center|char|circle|col-resize|collapse|crosshair|dashed|decimal|default|disabled|disc|distribute-all-lines|distribute-letter|distribute-space|distribute|dotted|double|e-resize|ellipsis|fixed|groove|hand|help|hidden|horizontal|ideograph-alpha|ideograph-numeric|ideograph-parenthesis|ideograph-space|inactive|inherit|inline-block|inline|inset|inside|inter-ideograph|inter-word|italic|justify|keep-all|left|lighter|line-edge|line-through|line|list-item|loose|lower-alpha|lower-roman|lowercase|lr-tb|ltr|medium|middle|move|n-resize|ne-resize|newspaper|no-drop|no-repeat|nw-resize|none|normal|not-allowed|nowrap|oblique|outset|outside|overline|pointer|progress|relative|repeat-x|repeat-y|repeat|right|ridge|row-resize|rtl|s-resize|scroll|se-resize|separate|small-caps|solid|square|static|strict|super|sw-resize|table-footer-group|table-header-group|tb-rl|text-bottom|text-top|text|thick|thin|top|transparent|underline|upper-alpha|upper-roman|uppercase|vertical-ideographic|vertical-text|visible|w-resize|wait|whitespace)\\b'
-        'name': 'support.constant.property-value.css.sass'
+        'include': '#css-values'
       }
       {
         'match': '(\\b(?i:arial|century|comic|courier|garamond|georgia|helvetica|impact|lucida(?: sans)?|symbol|system|tahoma|times(?: new roman)?|trebuchet|utopia|verdana|webdings|sans-serif|serif|mono|monospace)\\b)'
@@ -341,12 +290,10 @@
         'name': 'invalid.deprecated.color.w3c-non-standard-color-name.css.sass'
       }
       {
-        'match': '(-|\\+)?\\s*[0-9]+(\\.[0-9]+)?'
-        'name': 'constant.numeric.css'
+        'include': '#numeric'
       }
       {
-        'match': '(?<=[\\d])(px|pt|cm|mm|in|em|ex|pc)\\b|%'
-        'name': 'keyword.other.unit.css'
+        'include': '#units'
       }
       {
         'captures':
@@ -398,6 +345,51 @@
         'name': 'keyword.other.important.sass'
       }
     ]
+  'parent-selector':
+    {
+      'match': '(&)'
+      'name': 'keyword.other.parent-reference.sass'
+    }
+  'id-selector':
+    {
+      'captures':
+        '1':
+          'name': 'punctuation.definition.entity.sass'
+      'match': '(#)[a-zA-Z][a-zA-Z0-9_-]*'
+      'name': 'entity.other.attribute-name.id.css.sass'
+    }
+  'class-selector':
+    {
+      'captures':
+        '1':
+          'name': 'punctuation.definition.entity.css'
+      'match': '(\\.)[a-zA-Z0-9_-]+'
+      'name': 'entity.other.attribute-name.class.sass'
+    }
+  'placeholder-selector':
+    {
+      'captures':
+        '1':
+          'name': 'punctuation.definition.entity.css'
+      'match': '(%)[a-zA-Z0-9_-]+'
+      'name': 'entity.other.attribute-name.class.sass'
+    }
+  'pseudo-element':
+    {
+      'captures':
+        '1':
+          'name': 'punctuation.definition.entity.sass'
+      'match': '(:+)\\b(after|before|first-child|first-letter|first-line|last-child|selection)\\b'
+      'name': 'entity.other.attribute-name.pseudo-element.sass'
+    }
+  'pseudo-state':
+    {
+      'captures':
+        '1':
+          'name': 'punctuation.definition.entity.sass'
+      'match': '(:)\\b(active|hover|link|visited|focus|not)\\b'
+      'name': 'entity.other.attribute-name.pseudo-class.css.sass'
+    }
   'string-double':
     'begin': '"'
     'beginCaptures':
@@ -412,6 +404,9 @@
       {
         'match': '\\\\.'
         'name': 'constant.character.escape.sass'
+      }
+      {
+        'include': '#interpolations'
       }
     ]
   'string-single':
@@ -429,5 +424,95 @@
         'match': '\\\\.'
         'name': 'constant.character.escape.sass'
       }
+      {
+        'include': '#interpolations'
+      }
     ]
+  'numeric':
+    {
+      'match': '(-|\\+)?\\s*[0-9]+(\\.[0-9]+)?'
+      'name': 'constant.numeric.css'
+    }
+  'units':
+    {
+      'match': '(?<=[\\d])(px|pt|cm|mm|in|em|ex|pc|rem|s)\\b|%'
+      'name': 'keyword.other.unit.css'
+    }
+  'variables':
+    'match': '(\\$)([a-zA-Z0-9_-]+)'
+    'name': 'meta.variable-usage.sass'
+    'captures':
+      '1':
+        'name': 'punctuation.definition.entity.css'
+
+  'variable_setting':
+    'begin': '(?:\\s*((\\$)[A-Za-z0-9_-]+\\b))?\\s*(\\:)\\s*'
+    'captures':
+      '1':
+        'name': 'meta.variable.sass'
+      '2':
+        'name': 'punctuation.definition.entity.css'
+      '3':
+        'name': 'punctuation'
+    'end': '$'
+    'name': 'meta.set.variable.sass'
+    'patterns': [
+      {
+        'include': '#property-value'
+      }
+      {
+        'include': '#variables'
+      }
+    ]
+
+  'interpolations':
+    {
+      'begin': '(#\\{)'
+      'end': '(\\})'
+      'name': 'variable.interpolation.sass'
+      'patterns': [
+        {
+          'include': '#variables'
+        }
+        {
+          'include': '#string-single'
+        }
+        {
+          'include': '#string-double'
+        }
+      ]
+      'beginCaptures':
+        '1':
+          'name': 'punctuation.embedded.interpolation.sass'
+      'endCaptures':
+        '1':
+          'name': 'punctuation.embedded.interpolation.sass'
+
+    }
+
+  'tags':
+    {
+      'match': '\\b(a|abbr|acronym|address|area|article|aside|audio|b|base|big|blockquote|body|br|button|canvas|caption|cite|code|col|colgroup|command|datalist|dd|del|details|dfn|div|dl|dt|em|embed|fieldset|figure|footer|form|frame|frameset|(h[1-6])|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|map|mark|meta|meter|nav|noframes|noscript|object|ol|optgroup|option|output|p|param|pre|progress|q|rp|rt|ruby|samp|script|section|select|small|source|span|strike|strong|sub|sup|table|tbody|td|textarea|tfoot|th|thead|time|title|tr|tt|ul|var|video)\\b'
+      'name': 'entity.name.tag.css.sass'
+    }
+
+  'css-values':
+    {
+      'match': '\\b(absolute|all-scroll|always|auto|baseline|below|bidi-override|block|bold|bolder|both|bottom|break-all|break-word|capitalize|center|char|circle|col-resize|collapse|crosshair|dashed|decimal|default|disabled|disc|distribute-all-lines|distribute-letter|distribute-space|distribute|dotted|double|e-resize|ellipsis|fixed|groove|hand|help|hidden|horizontal|ideograph-alpha|ideograph-numeric|ideograph-parenthesis|ideograph-space|inactive|inherit|inline-block|inline|inset|inside|inter-ideograph|inter-word|italic|justify|keep-all|left|lighter|line-edge|line-through|line|list-item|loose|lower-alpha|lower-roman|lowercase|lr-tb|ltr|medium|middle|move|n-resize|ne-resize|newspaper|no-drop|no-repeat|nw-resize|none|normal|not-allowed|nowrap|oblique|outset|outside|overline|pointer|progress|relative|repeat-x|repeat-y|repeat|right|ridge|row-resize|rtl|s-resize|scroll|se-resize|separate|small-caps|solid|square|static|strict|super|sw-resize|table-footer-group|table-header-group|tb-rl|text-bottom|text-top|text|thick|thin|top|transparent|underline|upper-alpha|upper-roman|uppercase|vertical-ideographic|vertical-text|visible|w-resize|wait|whitespace)\\b'
+      'name': 'support.constant.property-value.css.sass'
+    }
+
+  'keywords':
+    {
+      'match': '\\b(from|in|through)\\b'
+      'name': 'keyword.control.sass'
+    }
+
+  'operators':
+    {
+      'match': '(?x)and=|or=|!|%|&|\\^|\\*|\\/|(\\-)?\\-(?!>)|\\+\\+|\\+|~|==|=(?!>)|!=|<=|>=|<<=|>>=|>>>=|<>|<|>|!|&&|\\.\\.(\\.)?|\\?|\\||\\|\\||\\:|\\*=|(?<!\\()/=|%=|\\+=|\\-=|&=|\\^='
+      'name': 'keyword.operator.sass'
+    }
+
+
 'scopeName': 'source.sass'
