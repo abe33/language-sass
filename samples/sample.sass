@@ -1,0 +1,376 @@
+@import compass
+
+@import partials/mixins
+
+@import imports/reset
+@import imports/mixins
+@import imports/variables
+
+@import mobile/placeholders
+@import mobile/layout
+@import mobile/fonts
+@import mobile/drawer
+@import mobile/navigation
+@import mobile/medias
+@import mobile/lists
+
+=keyframes($name)
+
+  @-webkit-keyframes #{$name}
+    @content
+
+  @-moz-keyframes #{$name}
+    @content
+
+  @-ms-keyframes #{$name}
+    @content
+
+  @-o-keyframes #{$name}
+    @content
+
+  @keyframes #{$name}
+    @content
+
++keyframes(touched)
+  0%
+    background: white
+
+  100%
+    background: $grey_light
+
++keyframes(touched_icon)
+  0%
+    background: $grey_light
+
+  100%
+    background: $black
+
+=rem($property, $value)
+  #{$property}: $value * $base-font-size
+  #{$property}: #{$value}rem
+
+
+@font-face
+  font-family: 'univers'
+  font-weight: normal
+  src: url(font_path('13949-webfont.eot'))
+  src: url(font_path('13949-webfont.eot?#iefix')) format('embedded-opentype'),  url(font_path('13949-webfont.woff')) format('woff'), url(font_path('13949-webfont.ttf')) format('truetype'), url(font_path('13949-webfont.svg#univers_condensedbold_italic')) format('svg')
+
+body
+  font-family: arial, helvetica, sans-serif
+
+.gutter
+  h1, h2, h3, h4, h5, h6
+    font-family: 'univers'
+    color: $black
+
+  h1, h2, h3, h4, h5, h6, p, .vcard, .list
+    @extend %mobile-margin
+
+  h2
+    font-size: 28px
+
+  h3
+    font-size: 24px
+
+%align-center
+  text-align: center
+
+%align-left
+  text-align: left
+
+%align-right
+  text-align: right
+
+%mobile-margin
+  margin: 15px 15px 10px
+
+
+%icon-medal
+  color: white
+  background: $blue_very_dark
+  border-radius: 50%
+  padding: 3px 0
+  text-align: center
+  font-size: 14px
+  +box(20px)
+  +box-shadow(0 1px 0 $blue_super_light)
+
+%blue-light-bevel-text
+  +text-shadow(0 1px 0 $blue_super_light)
+
+%blue-dark-bevel-text
+  +text-shadow(0 2px 0 $blue_very_dark)
+
+%grey-list-item
+  background: $grey_light
+  background-image: linear-gradient(to top, $grey_light 0%, white 100%)
+
+  &:before
+    color: $grey_dark
+
+%blue-list-item
+  background: $blue_light
+  background-image: linear-gradient(to bottom, $blue_light 0%, $blue 100%)
+
+  &:before
+    color: $blue_dark
+
+  &:not(:active)
+    color: red
+
+%action-list-item
+  min-height: 80px
+  margin-bottom: 1px
+  overflow: hidden
+  +relative
+  +box-shadow(0 1px 3px $light_shadow)
+  padding: 20px 40px
+  +box
+
+  h2
+    font-family: arial, helvetica, sans-serif
+    font-size: 16px
+    font-weight: bold
+    margin: 0
+    +transition(all 0.2s ease)
+
+  p
+    font-size: 12px
+    margin-top: 4px
+
+  h2, p
+    white-space: nowrap
+    overflow: hidden
+    +text-ellipsis
+
+#header, #footer
+
+%action-list-item-with-medal
+  &:before
+    content: '\f138'
+    font-family: FontAwesome
+    font-size: 20px
+    line-height: 20px
+    margin-top: -10px
+    +absolute(50%,null,null, 10px)
+
+%action-list-item-with-image
+  padding-left: 102px
+
+  img
+    +absolute(0,0)
+
+%small-action-list-item
+  min-height: 40px
+
+// Grid configuration is done throught the following sass variables.
+
+$breakpoint-phone: 480px
+$breakpoint-tablet: 668px
+$breakpoint-desktop: 1000px
+$breakpoint-large: 1220px
+$breakpoint-extra-large: 1600px
+
+$size_names: xs sm md lg xl xxl
+$size_breakpoints: $breakpoint-phone $breakpoint-tablet $breakpoint-desktop $breakpoint-large $breakpoint-extra-large
+$sizes_count: length($size_names)
+
+$grid_widths: 12
+
+$default_break_size: 'md'
+$default_grid_width: 12
+$default_grid_cell_name: 'grid-u'
+$default_offset_name: 'offset-u'
+
+// The paddings variables will serves to generates rows with gutters
+
+$padding: 20px
+$half-padding: $padding / 2
+$quarter-padding: $padding / 4
+$double-padding: $padding * 2
+$triple-padding: $padding * 3
+$quadruple-padding: $padding * 4
+
+$paddings-name: thin quarter half base double triple quadruple
+$paddings: 2px $quarter-padding $half-padding $padding $double-padding $triple-padding $quadruple-padding
+
+
+@function prefix($list, $prefix)
+  $new-list: ()
+
+  @each $item in $list
+    $value: $prefix + $item
+    $new-list: append($new-list, $value, comma)
+
+  @return $new-list
+
+@function join-list($list, $sep: '')
+  $str: ''
+
+  $count: length($list)
+
+  @for $i from 1 through $count
+    $item: nth($list, $i)
+    @if $i == 1
+      $str: unquote($str) + $item
+    @else
+      $str: unquote($str + $sep) + $item
+
+  @return $str
+
+
+// We'll use this variable to stores the list of columns selectors generated
+// for a breakpoint when media queries are enabled or all the columns
+// selectors when there's no media queries. This was we can reduce the amount
+// of generated css.
+$all_selectors: ()
+
+=grid-rows
+  .grid-g
+    position: relative
+    overflow: hidden
+    +clearfix
+
+    @for $i from 1 through length($paddings)
+      $name: nth($paddings-name, $i)
+      $pad: nth($paddings, $i)
+      $half-pad: $pad / 2
+
+      &.#{$name}-gutter
+        padding: 0
+        margin-left: -$half-pad
+        margin-right: -$half-pad
+
+        > [class*='grid-u']
+          padding-left: $half-pad
+          padding-right: $half-pad
+
+        +for-phone
+          &:not(.force-gutter)
+            margin-left: 0
+            margin-right: 0
+
+            > [class*='grid-u']
+              padding-left: 0
+              padding-right: 0
+
+=column-block
+  display: block
+  float: none
+  position: relative
+  letter-spacing: normal
+  @extend %placeholder
+
+=column-inline
+  display: inline-block
+  float: left
+  vertical-align: top
+
+=column($size_name, $grid_position, $grid_width)
+  $width: 100% * ($grid_position / $grid_width)
+
+  $selector: ('.#{$default_grid_cell_name}-#{$size_name}-#{$grid_position}-#{$grid_width}')
+
+  @if $size_name == $default_break_size
+    $selector: append($selector, '.#{$default_grid_cell_name}-#{$grid_position}-#{$grid_width}', comma)
+
+    @if $grid_width == $default_grid_width
+      $selector: append($selector, '.#{$default_grid_cell_name}-#{$grid_position}', comma)
+
+  @if $grid_width == $default_grid_width
+    $selector: append($selector, '.#{$default_grid_cell_name}-#{$size_name}-#{$grid_position}', comma)
+
+  $all_selectors: join($all_selectors, $selector, comma)
+
+  #{join-list($selector, ', ')}
+    width: $width
+
+=offset($size_name, $grid_position, $grid_width)
+  $width: 100% * ($grid_position / $grid_width)
+
+  $selector: ('.#{$default_offset_name}-#{$size_name}-#{$grid_position}-#{$grid_width}')
+
+  @if $size_name == $default_break_size
+    $selector: append($selector, '.#{$default_offset_name}-#{$grid_position}-#{$grid_width}', comma)
+
+    @if $grid_width == $default_grid_width
+      $selector: append($selector, '.#{$default_offset_name}-#{$grid_position}', comma)
+
+  @if $grid_width == $default_grid_width
+    $selector: append($selector, '.#{$default_offset_name}-#{$size_name}-#{$grid_position}', comma)
+
+  #{join-list($selector, ', ')}
+    margin-left: $width
+
+=grid-columns($no_media: false, $no_offsets: false)
+  @if $no_media
+    // On IE <= 8 media queries aren't supported, in that case the grids
+    // will never collapse, and the declarations must be done outside
+    // a @media block.
+    $all_selectors: ()
+    @for $i from 1 to $sizes_count
+      $size_name: nth($size_names, $i)
+
+      @for $j from 1 to $grid_widths+1
+        @if $j == 1
+          +column($size_name, 1, $j)
+
+          @if not $no_offsets
+            +offset($size_name, 1, $j)
+        @else
+          @for $k from 1 to $j
+            +column($size_name, $k, $j)
+
+            @if not $no_offsets
+              +offset($size_name, $k, $j)
+
+    #{join-list($all_selectors, ', ')}
+      +column-inline
+  @else
+    // Otherwise, we wrap any declarations for breakpoints greater than xs
+    // into a @media block.
+    [class*='#{$default_grid_cell_name}']
+      +column-block
+
+    @for $i from 1 to $sizes_count
+      $size_name: nth($size_names, $i)
+      $all_selectors: ()
+
+      @if $i >= 2
+        $breakpoint: nth($size_breakpoints, $i - 1)
+        $media: "only screen and (min-width: #{$breakpoint})"
+
+        @media #{$media}
+          @for $j from 1 to $grid_widths+1
+            @if $j == 1
+              +column($size_name, 1, $j)
+
+              @if not $no_offsets
+                +offset($size_name, 1, $j)
+            @else
+              @for $k from 1 to $j
+                +column($size_name, $k, $j)
+
+                @if not $no_offsets
+                  +offset($size_name, $k, $j)
+
+          #{join-list($all_selectors, ', ')}
+            +column-inline
+
+      @else
+        @for $j from 1 to $grid_widths
+          @if $j == 1
+            +column($size_name, 1, $j)
+
+            @if not $no_offsets
+              +offset($size_name, 1, $j)
+          @else
+            @for $k from 1 to $j
+              +column($size_name, $k, $j)
+
+              @if not $no_offsets
+                +offset($size_name, $k, $j)
+
+        #{join-list($all_selectors, ', ')}
+          +column-inline

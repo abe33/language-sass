@@ -1,0 +1,171 @@
+@import "compass";
+
+@import "partials/mixins";
+
+@import "imports/reset";
+@import "imports/mixins";
+@import "imports/variables";
+
+@import "mobile/placeholders";
+@import "mobile/layout";
+@import "mobile/fonts";
+@import "mobile/drawer";
+@import "mobile/navigation";
+@import "mobile/medias";
+@import "mobile/lists";
+
+$foo: 'bar';
+$baz: "baz";
+
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+
+  @-ms-keyframes #{$name} {
+    @content;
+  }
+
+  @-o-keyframes #{$name} {
+    @content;
+  }
+
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+@mixin rem($property, $value) {
+  #{$property}: $value * $base-font-size;
+  #{$property}: #{$value}rem;
+}
+
+@font-face {
+  font-family: "univers";
+  font-weight: normal;
+  src: url(font_path("13949-webfont.eot"));
+  src: url(font_path("13949-webfont.eot?#iefix")) format("embedded-opentype"), url(font_path("13949-webfont.woff")) format("woff"), url(font_path("13949-webfont.ttf")) format("truetype"), url(font_path("13949-webfont.svg#univers_condensedbold_italic")) format("svg");
+}
+
+
+body {
+  font-family: arial, helvetica, sans-serif;
+}
+
+.gutter {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "univers";
+    color: $black;
+  }
+  h1, h2, h3, h4, h5, h6, p, .vcard, .list {
+    @extend %mobile-margin;
+  }
+  h2 {
+    font-size: 28px;
+  }
+  h3 {
+    font-size: 24px;
+  }
+}
+
+%align-center {
+  text-align: center;
+}
+
+%align-left {
+  text-align: left;
+}
+
+%align-right {
+  text-align: right;
+}
+
+%mobile-margin {
+  margin: 15px 15px 10px;
+}
+
+%icon-medal {
+  color: white;
+  background: $blue_very_dark;
+  border-radius: 50%;
+  padding: 3px 0;
+  text-align: center;
+  font-size: 14px;
+  @include box(20px);
+  @include box-shadow(0 1px 0 $blue_super_light);
+}
+
+%blue-light-bevel-text {
+  @include text-shadow(0 1px 0 $blue_super_light);
+}
+
+%blue-dark-bevel-text {
+  @include text-shadow(0 2px 0 $blue_very_dark);
+}
+
+%grey-list-item {
+  background: $grey_light;
+  background-image: linear-gradient(to top, $grey_light 0%, white 100%);
+  &:before {
+    color: $grey_dark;
+  }
+}
+
+%blue-list-item {
+  background: $blue_light;
+  background-image: linear-gradient(to bottom, $blue_light 0%, $blue 100%);
+  &:before {
+    color: $blue_dark;
+  }
+}
+
+%action-list-item {
+  min-height: 80px;
+  margin-bottom: 1px;
+  overflow: hidden;
+  @include relative;
+  @include box-shadow(0 1px 3px $light_shadow);
+  padding: 20px 40px;
+  @include box;
+  h2 {
+    font-family: arial, helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+  }
+  p {
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  h2, p {
+    white-space: nowrap;
+    overflow: hidden;
+    @include text-ellipsis;
+  }
+}
+
+%action-list-item-with-medal {
+  &:before {
+    content: "\f138";
+    font-family: FontAwesome;
+    font-size: 20px;
+    line-height: 20px;
+    margin-top: -10px;
+    @include absolute(50%, null, null, 10px);
+  }
+}
+
+%action-list-item-with-image {
+  padding-left: 102px;
+  img {
+    @include absolute(0, 0);
+  }
+}
+
+%small-action-list-item {
+  min-height: 40px;
+}
