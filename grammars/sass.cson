@@ -230,11 +230,11 @@
 ]
 'repository':
   'comment-block':
-    'begin': '^(\\s*)(\\/\\/|\\/\\*)'
+    'begin': '(\\s*)(\\/\\/|\\/\\*)'
     'captures':
       '0':
         'name': 'punctuation.definition.comment.sass'
-    'end': '^(?!\\1\\s)'
+    'end': '^(?!\\1\\s)|$'
     'name': 'comment.sass'
   'property-name':
     {
@@ -252,6 +252,9 @@
         'name': 'invalid.illegal.punctuation.sass'
     'name': 'meta.property-value.sass'
     'patterns': [
+      {
+        'include': '#comment-block'
+      }
       {
         'match': '([-=+*/])'
         'name': 'punctuation.definition.entity.css'
