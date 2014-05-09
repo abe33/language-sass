@@ -1,10 +1,10 @@
-'comment': ''
+'scopeName': 'source.sass'
+'name': 'Sass'
 'fileTypes': [
   'sass'
 ]
 'foldingStartMarker': '^\\s*([-%#\\:\\.\\w\\=].*)\\s$'
 'foldingStopMarker': '^\\s*$'
-'name': 'Sass'
 'patterns': [
 
   {
@@ -58,7 +58,7 @@
         'name': 'variable.other.sass'
       '3':
         'name': 'invalid.illegal.punctuation.sass'
-    'match': '^\\s*(@extend)\\s+([.*&#a-zA-Z][:.*&#a-zA-Z]*)\\s*(;)?\\s*$'
+    'match': '^\\s*(@extend)\\s+([.*&#%a-zA-Z][-:.*&#a-zA-Z]*)\\s*(;)?\\s*$'
     'name': 'meta.function.extend.sass'
   }
   {
