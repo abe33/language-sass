@@ -98,6 +98,78 @@
     'include': '#comment-block'
   }
   {
+    'begin': '(?=[.*&#a-zA-Z][:.*&#a-zA-Z]*)'
+    'end': '(;)?$'
+    'endCaptures':
+      '1':
+        'name': 'invalid.illegal.punctuation.sass'
+    'name': 'meta.selector.css'
+    'patterns': [
+      {
+        'include': '#comment-block'
+      }
+      {
+        'match': '(&)'
+        'name': 'keyword.other.parent-reference.sass'
+      }
+      {
+        'match': '\\b(a|abbr|acronym|address|area|article|aside|audio|b|base|bdi|bdo|big|blockquote|body|br|button|canvas|caption|cite|code|col|colgroup|data|datalist|dd|del|details|dfn|dialog|div|dl|dt|em|embed|eventsource|fieldset|figure|figcaption|footer|form|frame|frameset|(h[1-6])|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|main|map|mark|menu|menuitem|meta|meter|nav|noframes|noscript|object|ol|optgroup|option|output|p|param|pre|progress|q|rb|rp|rt|rtc|ruby|s|samp|script|section|select|small|source|span|strike|strong|style|sub|summary|sup|svg|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|tt|u|ul|var|video|wbr)\\b'
+        'name': 'entity.name.tag.css.sass'
+      }
+      {
+        'captures':
+          '1':
+            'name': 'punctuation.definition.entity.css'
+        'match': '(\\.)[a-zA-Z0-9_-]+'
+        'name': 'entity.other.attribute-name.class.sass'
+      }
+      {
+        'captures':
+          '1':
+            'name': 'punctuation.definition.entity.sass'
+        'match': '(#)[a-zA-Z][a-zA-Z0-9_-]*'
+        'name': 'entity.other.attribute-name.id.css.sass'
+      }
+      {
+        'match': '\\*'
+        'name': 'entity.name.tag.wildcard.sass'
+      }
+      {
+        'captures':
+          '1':
+            'name': 'punctuation.definition.entity.sass'
+        'match': '(:+)\\b(after|before|first-child|first-letter|first-line|last-child|selection)\\b'
+        'name': 'entity.other.attribute-name.pseudo-element.sass'
+      }
+      {
+        'captures':
+          '1':
+            'name': 'punctuation.definition.entity.sass'
+        'match': '(:)\\b(active|hover|link|visited|focus)\\b'
+        'name': 'entity.other.attribute-name.pseudo-class.css.sass'
+      }
+      {
+        'captures':
+          '1':
+            'name': 'punctuation.definition.entity.sass'
+          '2':
+            'name': 'entity.other.attribute-name.attribute.sass'
+          '3':
+            'name': 'punctuation.separator.operator.sass'
+          '4':
+            'name': 'string.unquoted.attribute-value.sass'
+          '5':
+            'name': 'string.quoted.double.attribute-value.sass'
+          '6':
+            'name': 'punctuation.definition.string.begin.sass'
+          '7':
+            'name': 'punctuation.definition.string.end.sass'
+        'match': '(?i)(\\[)\\s*(-?[_a-z\\\\[[:^ascii:]]][_a-z0-9\\-\\\\[[:^ascii:]]]*)(?:\\s*([~|^$*]?=)\\s*(?:(-?[_a-z\\\\[[:^ascii:]]][_a-z0-9\\-\\\\[[:^ascii:]]]*)|((?>([\'"])(?:[^\\\\]|\\\\.)*?(\\6)))))?\\s*(\\])'
+        'name': 'meta.attribute-selector.css.sass'
+      }
+    ]
+  }
+  {
     'include': '#tags'
   }
   {
